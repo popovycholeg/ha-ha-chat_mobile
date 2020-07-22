@@ -11,14 +11,15 @@ import {
   KeyboardAvoidingView,
   ImageBackground
 } from 'react-native';
+
 import AsyncStorage from '@react-native-community/async-storage';
+import LoginCard from '../components/LoginCard';
 // import Loader from './сomponents/Loader';
 
 const LoginScreen = props => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
 
   const handleSubmitPress = () => {
     props.navigation.navigate("Register");
@@ -29,13 +30,36 @@ const LoginScreen = props => {
       {/* <Loader loading={loading} /> */}
       <ImageBackground source={require("../../images/base.png")} style={styles.bgImage}>
         <ScrollView keyboardShouldPersistTaps="handled">
-          <View style={{ marginTop: 100 }}>
-            <KeyboardAvoidingView enabled>
-            {/* <ImageBackground source={require("../../images/registration_fields.png")} style={{height: 200, width: 200}}>
-              
-            </ImageBackground> */}
-            </KeyboardAvoidingView>
-          </View>
+          <KeyboardAvoidingView enabled>
+            <LoginCard>
+            <View style={styles.SectionStyle}>
+                <TextInput
+                  style={styles.inputStyle}
+                  onChangeText={UserEmail => setUserEmail(UserEmail)}
+                  placeholder="Nickname"
+                  placeholderTextColor="#000"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  onSubmitEditing={() =>
+                    this._passwordinput && this._passwordinput.focus()
+                  }
+                  blurOnSubmit={false}
+                />
+              </View>
+              <View style={styles.SectionStyle}>
+                <TextInput
+                  style={styles.inputStyle}
+                  onChangeText={UserPassword => setUserPassword(UserPassword)}
+                  placeholder="Password"
+                  placeholderTextColor="#000"
+                  keyboardType="default"
+                  onSubmitEditing={Keyboard.dismiss}
+                  blurOnSubmit={false}
+                  secureTextEntry={true}
+                />
+              </View>
+            </LoginCard>
+          </KeyboardAvoidingView>
         </ScrollView>
       </ImageBackground>
     </View>
@@ -76,12 +100,14 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
-    paddingLeft: 15,
-    paddingRight: 15,
+    backgroundColor: '#bfd2d7',
+    color: "#000",
     borderWidth: 1,
-    borderRadius: 30,
-    borderColor: 'white',
+    borderRadius: 15,
+    borderColor: '#000',
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
+    textAlign: 'center'
   },
   registerTextStyle: {
     color: '#FFFFFF',
@@ -94,9 +120,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
   },
+
   bgImage: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center"
-  },
+  }
 });
