@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import i18next from 'i18next';
 
 import LoginCard from '../../components/LoginCard/LoginCard';
+import LanguageButton from '../../components/LanguageButton/LanguageButton';
 // import Loader from './сomponents/Loader';
 
 const LoginScreen = (props) => {
@@ -64,6 +65,11 @@ const LoginScreen = (props) => {
                 secureTextEntry={true}
               />
             </View>
+            <View style={styles.buttonsContainer}>
+              <LanguageButton lang='En'/>
+              <LanguageButton lang='Ua'/>
+              <LanguageButton lang='Ru'/>
+            </View>
           </LoginCard>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -90,8 +96,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 40,
     marginTop: 20,
-    marginLeft: 35,
-    marginRight: 35,
+    marginLeft: '10%',
+    marginRight: '10%',
     margin: 10,
   },
   buttonStyle: {
@@ -140,4 +146,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {},
+  buttonsContainer: {
+    marginTop: '10%',
+    flexDirection: 'row',
+    height: 45,
+    marginLeft: '10%',
+    marginRight: '10%',
+    justifyContent: 'space-between'
+  }
 });
