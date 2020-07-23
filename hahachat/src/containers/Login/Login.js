@@ -11,9 +11,10 @@ import {
   KeyboardAvoidingView,
   ImageBackground,
 } from 'react-native';
-
 import AsyncStorage from '@react-native-community/async-storage';
-import LoginCard from '../components/LoginCard';
+import i18next from 'i18next';
+
+import LoginCard from '../../components/LoginCard/LoginCard';
 // import Loader from './сomponents/Loader';
 
 const LoginScreen = (props) => {
@@ -41,7 +42,7 @@ const LoginScreen = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                placeholder="Nickname"
+                placeholder={i18next.t("Nickname")}
                 placeholderTextColor="#000"
                 autoCapitalize="none"
                 returnKeyType="next"
@@ -55,7 +56,7 @@ const LoginScreen = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                placeholder="Password"
+                placeholder={i18next.t("Password")}
                 placeholderTextColor="#000"
                 keyboardType="default"
                 onSubmitEditing={Keyboard.dismiss}
@@ -70,6 +71,19 @@ const LoginScreen = (props) => {
   );
 };
 export default LoginScreen;
+
+
+const en = require(`../../locale/en.json`); //TODO: move and switch
+const ru = require(`../../locale/ru.json`);
+const uk = require(`../../locale/uk.json`);
+i18next.init({
+  lng: 'uk',
+  preload: true,
+  resources: uk,
+  react: {
+    wait: true,
+  }
+});
 
 const styles = StyleSheet.create({
   SectionStyle: {
