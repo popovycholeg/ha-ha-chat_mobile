@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
+  Dimensions
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import i18next from 'i18next';
@@ -22,6 +23,7 @@ const LoginScreen = (props) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const logRegWidth =  (Math.round(Dimensions.get('window').width) * 0.8) * 0.6;
 
   const handleSubmitPress = () => {
     props.navigation.navigate('Register');
@@ -66,9 +68,15 @@ const LoginScreen = (props) => {
               />
             </View>
             <View style={styles.buttonsContainer}>
-              <LanguageButton lang='En'/>
-              <LanguageButton lang='Ua'/>
-              <LanguageButton lang='Ru'/>
+              <LanguageButton lang='En' size={{height: 55, width: 55}}/>
+              <LanguageButton lang='Ua' size={{height: 55, width: 55}}/>
+              <LanguageButton lang='Ru' size={{height: 55, width: 55}}/>
+            </View>
+            <View style={styles.logReg}>
+              <LanguageButton lang={i18next.t("Enter")} size={{height: 35, width: logRegWidth}}/>
+            </View>
+            <View style={styles.logReg}>
+              <LanguageButton lang={i18next.t("Registration")} size={{height: 35, width: logRegWidth}}/>
             </View>
           </LoginCard>
         </KeyboardAvoidingView>
@@ -148,10 +156,19 @@ const styles = StyleSheet.create({
   logo: {},
   buttonsContainer: {
     marginTop: '10%',
+    marginBottom: '10%',
     flexDirection: 'row',
     height: 45,
     marginLeft: '10%',
     marginRight: '10%',
     justifyContent: 'space-between'
+  },
+  logReg: {
+    marginTop: '15%',
+    flexDirection: 'row',
+    height: 45,
+    marginLeft: '10%',
+    marginRight: '10%',
+    justifyContent: 'center'
   }
 });

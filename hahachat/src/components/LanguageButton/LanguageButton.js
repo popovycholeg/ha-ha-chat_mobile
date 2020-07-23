@@ -3,13 +3,13 @@ import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 
 import {BoxShadow} from 'react-native-shadow';
 
-export default function LanguageButton({lang}) {
+export default function LanguageButton({lang, size}) {
   const [pressed, setPressed] = useState(false);
   
   const shadowOpt = {
     // For Android shadow
-    width: 55,
-    height: 55,
+    width: size.width,
+    height: size.height,
     color: '#000',
     border: 2,
     radius: 10,
@@ -27,12 +27,12 @@ export default function LanguageButton({lang}) {
       onShowUnderlay={() => setPressed(true)}
     >
       {pressed ? 
-        <View style={styles.pressedButton}>
+        <View style={[styles.pressedButton, {width: size.width, height: size.height}]}>
           <Text style={styles.text}>{lang}</Text>
         </View>
         :
         <BoxShadow setting={shadowOpt}>
-          <View style={styles.buttonContainer}>
+          <View style={[styles.buttonContainer, {width: size.width, height: size.height}]}>
             <Text style={styles.text}>{lang}</Text>
           </View>
         </BoxShadow>
@@ -44,8 +44,6 @@ export default function LanguageButton({lang}) {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: 55,
-    height: 55,
     backgroundColor: '#004941',
     borderRadius: 10,
     overflow: 'hidden',
@@ -54,8 +52,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   pressedButton: {
-    width: 55,
-    height: 55,
     backgroundColor: '#004941',
     borderRadius: 10,
     overflow: 'hidden',
