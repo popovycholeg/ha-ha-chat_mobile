@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -9,69 +9,69 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import LoginCard from '../components/LoginCard';
 // import Loader from './сomponents/Loader';
 
-const LoginScreen = props => {
+const LoginScreen = (props) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmitPress = () => {
-    props.navigation.navigate("Register");
+    props.navigation.navigate('Register');
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require('../../images/base.png')}
+      style={styles.bgImage}>
       {/* <Loader loading={loading} /> */}
-      <ImageBackground source={require("../../images/base.png")} style={styles.bgImage}>
-        <ScrollView keyboardShouldPersistTaps="handled">
-          <KeyboardAvoidingView enabled>
-            <LoginCard>
+      <ScrollView keyboardShouldPersistTaps="handled">
+        <KeyboardAvoidingView enabled>
+          <Image
+            source={{uri: '../../images/logo.png'}} // https://reactjs.org/logo-og.png // TODO
+            style={{width: "80%", height: 100, borderWidth: 1, borderColor: "red", alignSelf: "center"}}
+          />
+          <LoginCard>
             <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={UserEmail => setUserEmail(UserEmail)}
-                  placeholder="Nickname"
-                  placeholderTextColor="#000"
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                  onSubmitEditing={() =>
-                    this._passwordinput && this._passwordinput.focus()
-                  }
-                  blurOnSubmit={false}
-                />
-              </View>
-              <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={UserPassword => setUserPassword(UserPassword)}
-                  placeholder="Password"
-                  placeholderTextColor="#000"
-                  keyboardType="default"
-                  onSubmitEditing={Keyboard.dismiss}
-                  blurOnSubmit={false}
-                  secureTextEntry={true}
-                />
-              </View>
-            </LoginCard>
-          </KeyboardAvoidingView>
-        </ScrollView>
-      </ImageBackground>
-    </View>
+              <TextInput
+                style={styles.inputStyle}
+                onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+                placeholder="Nickname"
+                placeholderTextColor="#000"
+                autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() =>
+                  this._passwordinput && this._passwordinput.focus()
+                }
+                blurOnSubmit={false}
+              />
+            </View>
+            <View style={styles.SectionStyle}>
+              <TextInput
+                style={styles.inputStyle}
+                onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+                placeholder="Password"
+                placeholderTextColor="#000"
+                keyboardType="default"
+                onSubmitEditing={Keyboard.dismiss}
+                blurOnSubmit={false}
+                secureTextEntry={true}
+              />
+            </View>
+          </LoginCard>
+        </KeyboardAvoidingView>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#307ecc',
-  },
   SectionStyle: {
     flexDirection: 'row',
     height: 40,
@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
   inputStyle: {
     flex: 1,
     backgroundColor: '#bfd2d7',
-    color: "#000",
+    color: '#000',
     borderWidth: 1,
     borderRadius: 15,
     borderColor: '#000',
     borderRightWidth: 0,
     borderBottomWidth: 0,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   registerTextStyle: {
     color: '#FFFFFF',
@@ -120,10 +120,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
   },
-
   bgImage: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center"
-  }
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  logo: {},
 });
