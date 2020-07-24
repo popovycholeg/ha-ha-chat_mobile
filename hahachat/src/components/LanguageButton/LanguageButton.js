@@ -25,6 +25,7 @@ export default function LanguageButton({lang, size, onPress}) {
     <TouchableHighlight
       onHideUnderlay={() => setPressed(false)}
       onShowUnderlay={() => setPressed(true)}
+      underlayColor={"#216563"}
       onPress={onPress}
     >
       {pressed ? 
