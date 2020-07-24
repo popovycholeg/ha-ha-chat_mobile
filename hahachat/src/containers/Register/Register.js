@@ -129,19 +129,6 @@ const Register = (props) => {
 };
 export default Register;
 
-const en = require(`../../locale/en.json`); //TODO: move and switch
-const ru = require(`../../locale/ru.json`);
-const uk = require(`../../locale/uk.json`);
-
-i18next.init({
-  lng: 'uk',
-  preload: true,
-  resources: uk,
-  react: {
-    wait: true,
-  },
-});
-
 const styles = StyleSheet.create({
   SectionStyle: {
     flexDirection: 'row',

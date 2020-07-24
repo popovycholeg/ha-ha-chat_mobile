@@ -22,13 +22,46 @@ import LanguageButton from '../../components/LanguageButton/LanguageButton';
 // import Loader from './сomponents/Loader';
 
 const LoginScreen = (props) => {
-  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState('');
   const logRegWidth =  (Math.round(Dimensions.get('window').width) * 0.8) * 0.6;
-  //console.log(HOST)
+
   const handleSubmitPress = () => {
-    props.navigation.navigate('Register');
+    setErrortext('');
+    if (!userName) {
+      alert('Please fill Email');
+      return;
+    }
+    if (!userPassword) {
+      alert('Please fill Password');
+      return;
+    }
+    setLoading(true);
+    const dataToSend = { username: "admin", password: "admin" };
+
+    fetch(`${global.HOST}/api/token/login/`, {
+      method: 'POST',
+      body: dataToSend,
+    }).then(response => response.json())
+      .then(responseJson => {
+        //Hide Loader
+        setLoading(false);
+        console.log(responseJson);
+        // If server response message same as Data Matched
+        if (responseJson.status == 1) {
+          AsyncStorage.setItem('token', responseJson.auth_token);
+          // props.navigation.navigate('Chat');
+        } else {
+          setErrortext('Please check your email id or password');
+        }
+      })
+      .catch(error => {
+        //Hide Loader
+        setLoading(false);
+        console.error(error);
+      });
   };
 
   return (
@@ -75,10 +108,14 @@ const LoginScreen = (props) => {
               <LanguageButton lang='Ru' size={{height: 55, width: 55}}/>
             </View>
             <View style={styles.logReg}>
-              <LanguageButton lang={i18next.t("Enter")} size={{height: 35, width: logRegWidth}}/>
+              <LanguageButton 
+                lang={i18next.t("Enter")} 
+                size={{height: 35, width: logRegWidth}} 
+                onPress={() => handleSubmitPress()}/>
             </View>
             <View style={styles.logReg}>
-              <LanguageButton lang={i18next.t("Registration")} 
+              <LanguageButton 
+                lang={i18next.t("Registration")} 
                 size={{height: 35, width: logRegWidth}} 
                 onPress={() => props.navigation.navigate("Register")}/>
             </View>
@@ -89,16 +126,3 @@ const LoginScreen = (props) => {
   );
 };
 export default LoginScreen;
-
-
-const en = require(`../../locale/en.json`); //TODO: move and switch
-const ru = require(`../../locale/ru.json`);
-const uk = require(`../../locale/uk.json`);
-i18next.init({
-  lng: 'uk',
-  preload: true,
-  resources: uk,
-  react: {
-    wait: true,
-  }
-});

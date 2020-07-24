@@ -7,12 +7,25 @@ import React, { useState, useEffect } from 'react';
 //Import all required component
 import { ActivityIndicator, View, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import i18next from 'i18next';
 
 const SplashScreen = props => {
   //State for ActivityIndicator animation
   let [animating, setAnimating] = useState(true);
 
   useEffect(() => {
+    const en = require(`../../locale/en.json`); //TODO: move and switch
+    const ru = require(`../../locale/ru.json`);
+    const uk = require(`../../locale/uk.json`);
+    i18next.init({
+      lng: 'uk',
+      preload: true,
+      resources: uk,
+      react: {
+        wait: true,
+      }
+    });
+
     setTimeout(() => {
       setAnimating(false);
       //Check if user_id is set or not

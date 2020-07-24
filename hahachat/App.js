@@ -9,7 +9,7 @@ import Register from './src/containers/Register/Register';
 import SplashScreen from './src/containers/Splash/Splash';
 
 const Stack = createStackNavigator();
-global.HOST = "http://ha-ha-chat.com:5200";
+global.HOST = "http://ha-ha-chat.com:5200"; //TODO: config or .env
 
 const Auth = () => {
   return (
