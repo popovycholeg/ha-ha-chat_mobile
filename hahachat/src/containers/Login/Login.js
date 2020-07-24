@@ -15,6 +15,8 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import i18next from 'i18next';
 
+// import { HOST } from 'react-native-dotenv'
+import {styles} from './styles';
 import LoginCard from '../../components/LoginCard/LoginCard';
 import LanguageButton from '../../components/LanguageButton/LanguageButton';
 // import Loader from './сomponents/Loader';
@@ -24,7 +26,7 @@ const LoginScreen = (props) => {
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const logRegWidth =  (Math.round(Dimensions.get('window').width) * 0.8) * 0.6;
-
+  //console.log(HOST)
   const handleSubmitPress = () => {
     props.navigation.navigate('Register');
   };
@@ -76,7 +78,9 @@ const LoginScreen = (props) => {
               <LanguageButton lang={i18next.t("Enter")} size={{height: 35, width: logRegWidth}}/>
             </View>
             <View style={styles.logReg}>
-              <LanguageButton lang={i18next.t("Registration")} size={{height: 35, width: logRegWidth}}/>
+              <LanguageButton lang={i18next.t("Registration")} 
+                size={{height: 35, width: logRegWidth}} 
+                onPress={() => props.navigation.navigate("Register")}/>
             </View>
           </LoginCard>
         </KeyboardAvoidingView>
@@ -96,55 +100,5 @@ i18next.init({
   resources: uk,
   react: {
     wait: true,
-  }
-});
-
-const styles = StyleSheet.create({
-  SectionStyle: {
-    flexDirection: 'row',
-    height: 40,
-    marginTop: 20,
-    marginLeft: '10%',
-    marginRight: '10%',
-    margin: 10,
-  },
-  inputStyle: {
-    flex: 1,
-    backgroundColor: '#bfd2d7',
-    color: '#000',
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: '#000',
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
-    textAlign: 'center',
-  },
-  errorTextStyle: {
-    color: 'red',
-    textAlign: 'center',
-    fontSize: 14,
-  },
-  bgImage: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-  },
-  logo: {},
-  buttonsContainer: {
-    marginTop: '10%',
-    marginBottom: '10%',
-    flexDirection: 'row',
-    height: 45,
-    marginLeft: '10%',
-    marginRight: '10%',
-    justifyContent: 'space-between'
-  },
-  logReg: {
-    marginTop: '15%',
-    flexDirection: 'row',
-    height: 45,
-    marginLeft: '10%',
-    marginRight: '10%',
-    justifyContent: 'center'
   }
 });

@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 
 import {BoxShadow} from 'react-native-shadow';
 
-export default function LanguageButton({lang, size}) {
+export default function LanguageButton({lang, size, onPress}) {
   const [pressed, setPressed] = useState(false);
   
   const shadowOpt = {
@@ -25,9 +25,10 @@ export default function LanguageButton({lang, size}) {
     <TouchableHighlight
       onHideUnderlay={() => setPressed(false)}
       onShowUnderlay={() => setPressed(true)}
+      onPress={onPress}
     >
       {pressed ? 
-        <View style={[styles.pressedButton, {width: size.width, height: size.height}]}>
+        <View style={[styles.pressedButton, {width: size.width - 1, height: size.height - 1}]}>
           <Text style={styles.text}>{lang}</Text>
         </View>
         :
@@ -37,7 +38,6 @@ export default function LanguageButton({lang, size}) {
           </View>
         </BoxShadow>
       }
-      
     </TouchableHighlight>
   );
 }
