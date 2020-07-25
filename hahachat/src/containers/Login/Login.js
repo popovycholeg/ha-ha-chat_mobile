@@ -15,11 +15,11 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import i18next from 'i18next';
 
-// import { HOST } from 'react-native-dotenv'
 import {styles} from './styles';
 import LoginCard from '../../components/LoginCard/LoginCard';
 import LanguageButton from '../../components/LanguageButton/LanguageButton';
-// import Loader from './сomponents/Loader';
+import Loader from '../../components/Loader/Loader';
+import {login} from '../../services/authService';
 
 const LoginScreen = (props) => {
   const [userName, setUserEmail] = useState('');
@@ -28,47 +28,33 @@ const LoginScreen = (props) => {
   const [errortext, setErrortext] = useState('');
   const logRegWidth =  (Math.round(Dimensions.get('window').width) * 0.8) * 0.6;
 
-  const handleSubmitPress = () => {
-    setErrortext('');
+  const handleEnterPress = () => {
     if (!userName) {
-      alert('Please fill Email');
+      setErrortext('Please fill Email');
       return;
     }
     if (!userPassword) {
-      alert('Please fill Password');
+      setErrortext('Please fill Password');
       return;
     }
+    setErrortext('');
     setLoading(true);
-    const dataToSend = { username: "admin", password: "admin" };
-
-    fetch(`${global.HOST}/api/token/login/`, {
-      method: 'POST',
-      body: dataToSend,
-    }).then(response => response.json())
-      .then(responseJson => {
-        //Hide Loader
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status == 1) {
-          AsyncStorage.setItem('token', responseJson.auth_token);
-          // props.navigation.navigate('Chat');
-        } else {
-          setErrortext('Please check your email id or password');
-        }
-      })
-      .catch(error => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
-  };
+  
+    const dataToSend = { username: userName, password: userPassword };
+    login(dataToSend).then(data => {
+      setLoading(false);
+      console.log(data.auth_token)
+    }).catch(error => {
+      setLoading(false);
+      setErrortext('Please check your email id or password');
+    });
+  }
 
   return (
     <ImageBackground
       source={require('../../images/base.png')}
       style={styles.bgImage}>
-      {/* <Loader loading={loading} /> */}
+      <Loader loading={loading} />
       <ScrollView keyboardShouldPersistTaps="handled">
         <KeyboardAvoidingView enabled>
           <Image
@@ -111,7 +97,7 @@ const LoginScreen = (props) => {
               <LanguageButton 
                 lang={i18next.t("Enter")} 
                 size={{height: 35, width: logRegWidth}} 
-                onPress={() => handleSubmitPress()}/>
+                onPress={() => handleEnterPress()}/>
             </View>
             <View style={styles.logReg}>
               <LanguageButton 
