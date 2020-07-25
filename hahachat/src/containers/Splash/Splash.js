@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 
 //Import all required component
-import { ActivityIndicator, View, StyleSheet, Image } from 'react-native';
+import { ActivityIndicator, ImageBackground, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import i18next from 'i18next';
 
@@ -40,9 +40,11 @@ const SplashScreen = props => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require('../../images/base.png')}
+      style={styles.bgImage}>
       <Image
-        source={require('../../images/base.png')}
+        source={require('../../images/logo.png')}
         style={{ width: '90%', resizeMode: 'contain', margin: 30 }}
       />
       <ActivityIndicator
@@ -51,17 +53,16 @@ const SplashScreen = props => {
         size="large"
         style={styles.activityIndicator}
       />
-    </View>
+    </ImageBackground>
   );
 };
 export default SplashScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  bgImage: {
     flex: 1,
-    alignItems: 'center',
+    resizeMode: 'cover',
     justifyContent: 'center',
-    backgroundColor: '#307ecc',
   },
   activityIndicator: {
     alignItems: 'center',
