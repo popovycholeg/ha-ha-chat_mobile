@@ -32,3 +32,32 @@ export const login = (dataToSend) => {
       return data;
     });
 }
+
+export const register = (dataToSend) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(dataToSend),
+  };
+
+  return fetch(`${global.HOST}/api/account/register/`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      
+      return data;
+    });
+}
+
+export const getLanguages = () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'}
+  };
+
+  return fetch(`${global.HOST}/api/languages/`, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      
+      return data;
+    });
+}

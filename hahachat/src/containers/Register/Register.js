@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  StyleSheet,
   TextInput,
   View,
   ScrollView,
@@ -14,19 +13,37 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import i18next from 'i18next';
 
+import {styles} from './styles';
 import LoginCard from '../../components/LoginCard/LoginCard';
 import LanguageButton from '../../components/LanguageButton/LanguageButton';
 import LanguagesList from '../..//components/LanguagesList/LanguagesList';
+import { getLanguages, register } from '../../services/authService';
 // import Loader from './сomponents/Loader';
 
 const Register = (props) => {
+  const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [RepeatPassword, setRepeatPassword] = useState('');
+  const [languages, setLanguages] = useState([]);
+  const [language, setLanguage] = useState(1);
   const [year, setUserAge] = useState('');
-
   const [loading, setLoading] = useState(false);
+
   const logRegWidth = Math.round(Dimensions.get('window').width) * 0.8 * 0.6;
+
+  useEffect(() => { // TODO: move to hoc
+    getLanguages()
+    .then(data => {
+      setLanguages(data);
+    }) .catch((error) => {
+        console.log(error)
+      });
+  }, []);
+
+  const handleRegisterClick = () => {
+    register
+  }
 
   return (
     <ImageBackground
@@ -85,7 +102,7 @@ const Register = (props) => {
               />
             </View>
             <View style={styles.SectionStyle}>
-              <LanguagesList />
+              <LanguagesList languages={languages} />
             </View>
             <View style={styles.SectionStyle}>
               <TextInput
@@ -117,7 +134,7 @@ const Register = (props) => {
             </View>
             <View style={styles.logReg}>
               <LanguageButton
-                lang={i18next.t('Registration')}
+                text={i18next.t('Registration')}
                 size={{height: 35, width: logRegWidth}}
               />
             </View>
@@ -129,51 +146,3 @@ const Register = (props) => {
 };
 export default Register;
 
-const styles = StyleSheet.create({
-  SectionStyle: {
-    flexDirection: 'row',
-    height: 40,
-    marginBottom: '5%',
-    marginLeft: '10%',
-    marginRight: '10%',
-  },
-  inputStyle: {
-    flex: 1,
-    backgroundColor: '#bfd2d7',
-    color: '#000',
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: '#000',
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
-    textAlign: 'center',
-  },
-  errorTextStyle: {
-    color: 'red',
-    textAlign: 'center',
-    fontSize: 14,
-  },
-  bgImage: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-  },
-  logo: {},
-  buttonsContainer: {
-    marginTop: '10%',
-    marginBottom: '10%',
-    flexDirection: 'row',
-    height: 45,
-    marginLeft: '10%',
-    marginRight: '10%',
-    justifyContent: 'space-between',
-  },
-  logReg: {
-    marginTop: '15%',
-    flexDirection: 'row',
-    height: 45,
-    marginLeft: '10%',
-    marginRight: '10%',
-    justifyContent: 'center',
-  },
-});

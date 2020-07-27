@@ -103,20 +103,20 @@ const LoginScreen = (props) => {
               <Text style={styles.errorTextStyle}> {errortext} </Text>
             ) : null}
             <View style={styles.buttonsContainer}>
-              <LanguageButton lang="En" size={{height: 55, width: 55}} />
-              <LanguageButton lang="Ua" size={{height: 55, width: 55}} />
-              <LanguageButton lang="Ru" size={{height: 55, width: 55}} />
+              <LanguageButton text="En" size={{height: 55, width: 55}} />
+              <LanguageButton text="Ua" size={{height: 55, width: 55}} />
+              <LanguageButton text="Ru" size={{height: 55, width: 55}} />
             </View>
             <View style={styles.logReg}>
               <LanguageButton
-                lang={i18next.t('Enter')}
+                text={i18next.t('Enter')}
                 size={{height: 35, width: logRegWidth}}
                 onPress={() => handleEnterPress()}
               />
             </View>
             <View style={styles.logReg}>
               <LanguageButton
-                lang={i18next.t('Registration')}
+                text={i18next.t('Registration')}
                 size={{height: 35, width: logRegWidth}}
                 onPress={() => props.navigation.navigate('Register')}
               />
