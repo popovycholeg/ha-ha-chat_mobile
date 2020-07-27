@@ -10,27 +10,29 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ImageBackground,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import i18next from 'i18next';
+import {connect} from 'react-redux';
 
 import {styles} from './styles';
 import LoginCard from '../../components/LoginCard/LoginCard';
 import LanguageButton from '../../components/LanguageButton/LanguageButton';
 import Loader from '../../components/Loader/Loader';
 import {login} from '../../services/authService';
+import {setToken} from '../../redux/slices/loginSlice';
 
 const LoginScreen = (props) => {
   const [userName, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
-  const logRegWidth =  (Math.round(Dimensions.get('window').width) * 0.8) * 0.6;
+  const logRegWidth = Math.round(Dimensions.get('window').width) * 0.8 * 0.6;
 
   const handleEnterPress = () => {
     if (!userName) {
-      setErrortext('Please fill Email');
+      setErrortext('Please fill Username'); // TODO: translate
       return;
     }
     if (!userPassword) {
@@ -39,16 +41,19 @@ const LoginScreen = (props) => {
     }
     setErrortext('');
     setLoading(true);
-  
-    const dataToSend = { username: userName, password: userPassword };
-    login(dataToSend).then(data => {
-      setLoading(false);
-      console.log(data.auth_token)
-    }).catch(error => {
-      setLoading(false);
-      setErrortext('Please check your email id or password');
-    });
-  }
+
+    const dataToSend = {username: userName, password: userPassword};
+    login(dataToSend)
+      .then((data) => {
+        setLoading(false);
+        props.setToken(data.auth_token);
+        props.navigation.navigate('Chat');
+      })
+      .catch((error) => {
+        setLoading(false);
+        setErrortext('Please check your email id or password');
+      });
+  };
 
   return (
     <ImageBackground
@@ -59,14 +64,20 @@ const LoginScreen = (props) => {
         <KeyboardAvoidingView enabled>
           <Image
             source={{uri: '../../images/logo.png'}} // https://reactjs.org/logo-og.png // TODO
-            style={{width: "80%", height: 100, borderWidth: 1, borderColor: "red", alignSelf: "center"}}
+            style={{
+              width: '80%',
+              height: 100,
+              borderWidth: 1,
+              borderColor: 'red',
+              alignSelf: 'center',
+            }}
           />
           <LoginCard>
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                placeholder={i18next.t("Nickname")}
+                placeholder={i18next.t('Nickname')}
                 placeholderTextColor="#000"
                 autoCapitalize="none"
                 returnKeyType="next"
@@ -80,7 +91,7 @@ const LoginScreen = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                placeholder={i18next.t("Password")}
+                placeholder={i18next.t('Password')}
                 placeholderTextColor="#000"
                 keyboardType="default"
                 onSubmitEditing={Keyboard.dismiss}
@@ -88,22 +99,27 @@ const LoginScreen = (props) => {
                 secureTextEntry={true}
               />
             </View>
+            {errortext != '' ? (
+              <Text style={styles.errorTextStyle}> {errortext} </Text>
+            ) : null}
             <View style={styles.buttonsContainer}>
-              <LanguageButton lang='En' size={{height: 55, width: 55}}/>
-              <LanguageButton lang='Ua' size={{height: 55, width: 55}}/>
-              <LanguageButton lang='Ru' size={{height: 55, width: 55}}/>
+              <LanguageButton lang="En" size={{height: 55, width: 55}} />
+              <LanguageButton lang="Ua" size={{height: 55, width: 55}} />
+              <LanguageButton lang="Ru" size={{height: 55, width: 55}} />
             </View>
             <View style={styles.logReg}>
-              <LanguageButton 
-                lang={i18next.t("Enter")} 
-                size={{height: 35, width: logRegWidth}} 
-                onPress={() => handleEnterPress()}/>
+              <LanguageButton
+                lang={i18next.t('Enter')}
+                size={{height: 35, width: logRegWidth}}
+                onPress={() => handleEnterPress()}
+              />
             </View>
             <View style={styles.logReg}>
-              <LanguageButton 
-                lang={i18next.t("Registration")} 
-                size={{height: 35, width: logRegWidth}} 
-                onPress={() => props.navigation.navigate("Register")}/>
+              <LanguageButton
+                lang={i18next.t('Registration')}
+                size={{height: 35, width: logRegWidth}}
+                onPress={() => props.navigation.navigate('Register')}
+              />
             </View>
           </LoginCard>
         </KeyboardAvoidingView>
@@ -111,4 +127,6 @@ const LoginScreen = (props) => {
     </ImageBackground>
   );
 };
-export default LoginScreen;
+const mapDispatchToProps = {setToken};
+const mapStateToProps = (state) => ({loginReducer: state.loginReducer});
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

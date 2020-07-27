@@ -47,5 +47,10 @@ export const styles = StyleSheet.create({
     marginLeft: '10%',
     marginRight: '10%',
     justifyContent: 'center'
+  },
+  errorTextStyle: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 14,
   }
 });
