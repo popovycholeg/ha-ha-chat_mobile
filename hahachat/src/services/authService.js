@@ -9,7 +9,7 @@ const handleResponse = (response) => {
         // refresh(); // TODO
       }
 
-      const error = (data && data.message) || response.statusText;
+      const error = (data && data) || response.statusText;
       return Promise.reject(error);
     }
 

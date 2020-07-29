@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   ImageBackground,
   Dimensions,
-  Text
+  Text,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useAxiosRequest} from 'use-axios-request';
@@ -18,7 +18,7 @@ import {styles} from './styles';
 import LoginCard from '../../components/LoginCard/LoginCard';
 import LanguageButton from '../../components/LanguageButton/LanguageButton';
 import LanguagesList from '../..//components/LanguagesList/LanguagesList';
-import {getLanguages, register} from '../../services/authService';
+import {register} from '../../services/authService';
 import Loader from '../../components/Loader/Loader';
 
 const Register = (props) => {
@@ -26,39 +26,56 @@ const Register = (props) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [repeatedPassword, setRepeatPassword] = useState('');
-  const [language, setLanguage] = useState(1);
+  const [selectedLanguage, setLanguage] = useState(1);
   const [year, setUserAge] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState('');
+  const logRegWidth = Math.round(Dimensions.get('window').width) * 0.8 * 0.6;
 
   const {data: languages = []} = useAxiosRequest(
     `${global.HOST}/api/languages/`,
   );
-  const {data, error, update: register} = useAxiosRequest();
-
-
-  const [loading, setLoading] = useState(false);
-  const logRegWidth = Math.round(Dimensions.get('window').width) * 0.8 * 0.6;
 
   const handleRegisterClick = () => {
-    register({
-      url: `${global.HOST}/api/account/register/`,
-      method: 'POST',
-      data: JSON.stringify({
-        username: userName,
-        password: userPassword,
-        password2: repeatedPassword,
-        language: language,
-        email: userEmail,
-        born: year
+    if (!userName || !userPassword || !userEmail || !repeatedPassword || !year) {
+      setErrortext('Please fill all fields'); // TODO: translate
+      return;
+    }
+    if (userPassword !== repeatedPassword) {
+      setErrortext('Passwords don`t match');
+      return;
+    }
+    const dataToSend = {
+      username: userName,
+      password: userPassword,
+      password2: repeatedPassword,
+      language: selectedLanguage,
+      email: userEmail,
+      born: year,
+    };
+    setErrortext('');
+    setLoading(true);
+
+    register(dataToSend)
+      .then((data) => {
+        setLoading(false);
+        Alert.alert('Success', 'Successfully registrated a new user.');
+        props.navigation.navigate('Login');
       })
-    });
-    console.log(error);
+      .catch((error) => {
+        // if (error.username[0] === 'User with this username already exists.') {
+        //   setErrortext('Please try again');
+        // }
+        setLoading(false);
+        setErrortext(JSON.stringify(error)); // error handeling
+      });
   };
 
   return (
     <ImageBackground
       source={require('../../images/base.png')}
       style={styles.bgImage}>
-      {/* <Loader loading={isFetching} /> */}
+      <Loader loading={loading} />
       <ScrollView keyboardShouldPersistTaps="handled">
         <KeyboardAvoidingView enabled>
           <Image
@@ -113,7 +130,7 @@ const Register = (props) => {
             <View style={styles.SectionStyle}>
               <LanguagesList
                 languages={languages}
-                language={language}
+                language={selectedLanguage}
                 onChange={setLanguage}
               />
             </View>
@@ -145,6 +162,9 @@ const Register = (props) => {
                 blurOnSubmit={false}
               />
             </View>
+            {errortext != '' ? (
+              <Text style={styles.errorTextStyle}> {errortext} </Text>
+            ) : null}
             <View style={styles.logReg}>
               <LanguageButton
                 text={i18next.t('Registration')}
