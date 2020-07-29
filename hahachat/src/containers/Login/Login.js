@@ -53,7 +53,7 @@ const LoginScreen = (props) => {
         setLoading(false);
         props.setToken(data.auth_token);
         AsyncStorage.setItem('token', data.auth_token);
-        props.navigation.navigate('Chat');
+        props.navigation.navigate('ChatStack');
       })
       .catch((error) => {
         setLoading(false);

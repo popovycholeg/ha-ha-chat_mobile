@@ -34,7 +34,7 @@ const SplashScreen = props => {
         //else send to Home Screen
         AsyncStorage.getItem('token').then(value =>
           props.navigation.navigate(
-            value === null ? 'Auth' : 'ChatStack'
+            value === null ? 'Auth' : 'Auth' //ChatStack
           )
         );
       }, 2000);
