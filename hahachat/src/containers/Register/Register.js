@@ -8,48 +8,57 @@ import {
   KeyboardAvoidingView,
   ImageBackground,
   Dimensions,
-  Button
+  Text
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import {useAxiosRequest} from 'use-axios-request';
 import i18next from 'i18next';
 
 import {styles} from './styles';
 import LoginCard from '../../components/LoginCard/LoginCard';
 import LanguageButton from '../../components/LanguageButton/LanguageButton';
 import LanguagesList from '../..//components/LanguagesList/LanguagesList';
-import { getLanguages, register } from '../../services/authService';
-// import Loader from './сomponents/Loader';
+import {getLanguages, register} from '../../services/authService';
+import Loader from '../../components/Loader/Loader';
 
 const Register = (props) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  const [RepeatPassword, setRepeatPassword] = useState('');
-  const [languages, setLanguages] = useState([]);
+  const [repeatedPassword, setRepeatPassword] = useState('');
   const [language, setLanguage] = useState(1);
   const [year, setUserAge] = useState('');
-  const [loading, setLoading] = useState(false);
 
+  const {data: languages = []} = useAxiosRequest(
+    `${global.HOST}/api/languages/`,
+  );
+  const {data, error, update: register} = useAxiosRequest();
+
+
+  const [loading, setLoading] = useState(false);
   const logRegWidth = Math.round(Dimensions.get('window').width) * 0.8 * 0.6;
 
-  useEffect(() => { // TODO: move to hoc
-    getLanguages()
-    .then(data => {
-      setLanguages(data);
-    }) .catch((error) => {
-        console.log(error)
-      });
-  }, []);
-
   const handleRegisterClick = () => {
-    register
-  }
+    register({
+      url: `${global.HOST}/api/account/register/`,
+      method: 'POST',
+      data: JSON.stringify({
+        username: userName,
+        password: userPassword,
+        password2: repeatedPassword,
+        language: language,
+        email: userEmail,
+        born: year
+      })
+    });
+    console.log(error);
+  };
 
   return (
     <ImageBackground
       source={require('../../images/base.png')}
       style={styles.bgImage}>
-      {/* <Loader loading={loading} /> */}
+      {/* <Loader loading={isFetching} /> */}
       <ScrollView keyboardShouldPersistTaps="handled">
         <KeyboardAvoidingView enabled>
           <Image
@@ -66,7 +75,7 @@ const Register = (props) => {
             <View style={[styles.SectionStyle, {marginTop: '10%'}]}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={(nickname) => setUserEmail(nickname)}
+                onChangeText={(nickname) => setUserName(nickname)}
                 placeholder={i18next.t('Nickname')}
                 placeholderTextColor="#000"
                 autoCapitalize="none"
@@ -102,7 +111,11 @@ const Register = (props) => {
               />
             </View>
             <View style={styles.SectionStyle}>
-              <LanguagesList languages={languages} />
+              <LanguagesList
+                languages={languages}
+                language={language}
+                onChange={setLanguage}
+              />
             </View>
             <View style={styles.SectionStyle}>
               <TextInput
@@ -136,6 +149,7 @@ const Register = (props) => {
               <LanguageButton
                 text={i18next.t('Registration')}
                 size={{height: 35, width: logRegWidth}}
+                onPress={handleRegisterClick}
               />
             </View>
           </LoginCard>
@@ -144,5 +158,5 @@ const Register = (props) => {
     </ImageBackground>
   );
 };
-export default Register;
 
+export default Register;

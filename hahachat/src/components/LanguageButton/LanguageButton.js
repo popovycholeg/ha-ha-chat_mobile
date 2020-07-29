@@ -45,10 +45,10 @@ const LanguageButton = ({text, size, onPress}) => {
   );
 }
 
-LanguageButton.propTypes = {
-  text: PropTypes.string,
-  size: PropTypes.object,
-  onPress: PropTypes.func
-};
+// LanguageButton.propTypes = {
+//   text: PropTypes.string,
+//   size: PropTypes.object,
+//   onPress: PropTypes.func
+// };
 
 export default LanguageButton;

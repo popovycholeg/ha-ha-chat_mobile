@@ -47,17 +47,3 @@ export const register = (dataToSend) => {
       return data;
     });
 }
-
-export const getLanguages = () => {
-  const requestOptions = {
-    method: 'GET',
-    headers: {'Content-Type': 'application/json'}
-  };
-
-  return fetch(`${global.HOST}/api/languages/`, requestOptions)
-    .then(handleResponse)
-    .then((data) => {
-      
-      return data;
-    });
-}

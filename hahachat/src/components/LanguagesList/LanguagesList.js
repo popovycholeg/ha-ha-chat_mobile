@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
+import PropTypes from 'prop-types';
 import {Picker} from '@react-native-community/picker';
 import {View} from 'native-base';
 
-export default LanguagesList = ({languages}) => {
-  const [selectedLanguage, setLanguage] = useState(1);
-
+const LanguagesList = ({languages, language, onChange}) => {
   return (
     <View
       style={{
@@ -19,10 +18,10 @@ export default LanguagesList = ({languages}) => {
         overflow: 'hidden',
       }}>
       <Picker
-        selectedValue={selectedLanguage}
+        selectedValue={language}
         style={styles.input}
         // mode="dropdown"
-        onValueChange={(itemValue, itemIndex) => setLanguage(itemValue)}>
+        onValueChange={(itemValue, itemIndex) => onChange(itemValue)}>
         {languages.map((language) => (
           <Picker.Item
             label={language.name_en}
@@ -35,6 +34,12 @@ export default LanguagesList = ({languages}) => {
   );
 };
 
+LanguagesList.propTypes = {
+  languages: PropTypes.array,
+  language: PropTypes.number,
+  onPress: PropTypes.func
+};
+
 const styles = StyleSheet.create({
   input: {
     width: '100%',
@@ -45,3 +50,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default LanguagesList;
