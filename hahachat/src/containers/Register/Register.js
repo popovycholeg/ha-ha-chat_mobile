@@ -9,10 +9,11 @@ import {
   ImageBackground,
   Dimensions,
   Text,
+  Alert
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useAxiosRequest} from 'use-axios-request';
-import i18next from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 import {styles} from './styles';
 import LoginCard from '../../components/LoginCard/LoginCard';
@@ -30,6 +31,7 @@ const Register = (props) => {
   const [year, setUserAge] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
+  const { t, i18n } = useTranslation();
   const logRegWidth = Math.round(Dimensions.get('window').width) * 0.8 * 0.6;
 
   const {data: languages = []} = useAxiosRequest(
@@ -67,7 +69,7 @@ const Register = (props) => {
         //   setErrortext('Please try again');
         // }
         setLoading(false);
-        setErrortext(JSON.stringify(error)); // error handeling
+        setErrortext(JSON.stringify(error)); //TODO: error handeling
       });
   };
 
@@ -93,7 +95,7 @@ const Register = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(nickname) => setUserName(nickname)}
-                placeholder={i18next.t('Nickname')}
+                placeholder={t('Nickname')}
                 placeholderTextColor="#000"
                 autoCapitalize="none"
                 returnKeyType="next"
@@ -107,7 +109,7 @@ const Register = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(userPassword) => setUserPassword(userPassword)}
-                placeholder={i18next.t('Password')}
+                placeholder={t('Password')}
                 placeholderTextColor="#000"
                 keyboardType="default"
                 onSubmitEditing={Keyboard.dismiss}
@@ -119,7 +121,7 @@ const Register = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(userPassword) => setRepeatPassword(userPassword)}
-                placeholder={i18next.t('Repeat Password')}
+                placeholder={t('Repeat Password')}
                 placeholderTextColor="#000"
                 keyboardType="default"
                 onSubmitEditing={Keyboard.dismiss}
@@ -138,7 +140,7 @@ const Register = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(userEmail) => setUserEmail(userEmail)}
-                placeholder={i18next.t('Email')}
+                placeholder={t('Email')}
                 placeholderTextColor="#000"
                 autoCapitalize="none"
                 returnKeyType="next"
@@ -152,7 +154,7 @@ const Register = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={(year) => setUserAge(year)}
-                placeholder={i18next.t('Born (year)')}
+                placeholder={t('Born (year)')}
                 placeholderTextColor="#000"
                 autoCapitalize="none"
                 returnKeyType="next"
@@ -167,7 +169,7 @@ const Register = (props) => {
             ) : null}
             <View style={styles.logReg}>
               <LanguageButton
-                text={i18next.t('Registration')}
+                text={t('Registration')}
                 size={{height: 35, width: logRegWidth}}
                 onPress={handleRegisterClick}
               />

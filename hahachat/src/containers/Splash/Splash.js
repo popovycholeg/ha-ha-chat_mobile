@@ -1,42 +1,44 @@
-/* This is an Login Registration example from https://aboutreact.com/ */
-/* https://aboutreact.com/react-native-login-and-signup/ */
-
-//Import React and Hooks we needed
 import React, { useState, useEffect } from 'react';
-
-//Import all required component
 import { ActivityIndicator, ImageBackground, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import i18next from 'i18next';
+import { initReactI18next } from "react-i18next";
+
+const en = require(`../../locale/en.json`);
+const ru = require(`../../locale/ru.json`);
+const uk = require(`../../locale/uk.json`);
 
 const SplashScreen = props => {
-  //State for ActivityIndicator animation
-  let [animating, setAnimating] = useState(true);
 
   useEffect(() => {
-    const en = require(`../../locale/en.json`); //TODO: move and switch
-    const ru = require(`../../locale/ru.json`);
-    const uk = require(`../../locale/uk.json`);
-    i18next.init({
-      lng: 'uk',
-      preload: true,
-      resources: uk,
-      react: {
-        wait: true,
-      }
-    });
-
-    setTimeout(() => {
-      setAnimating(false);
-      //Check if user_id is set or not
-      //If not then send for Authentication
-      //else send to Home Screen
-      AsyncStorage.getItem('user_id').then(value =>
-        props.navigation.navigate(
-          value === null ? 'Auth' : 'ChatStack'
-        )
-      );
-    }, 2000);
+    (async function inititilize() {
+      const lang = await AsyncStorage.getItem('lang');
+      i18next
+      .use(initReactI18next)
+      .init({
+        lng: lang,
+        preload: true,
+        resources: {
+          ...en,
+          ...uk,
+          ...ru
+        },
+        react: {
+          wait: true,
+        }
+      });
+  
+      setTimeout(() => {
+        //Check if token is set or not
+        //If not then send for Authentication
+        //else send to Home Screen
+        AsyncStorage.getItem('token').then(value =>
+          props.navigation.navigate(
+            value === null ? 'Auth' : 'ChatStack'
+          )
+        );
+      }, 2000);
+    })();
   }, []);
 
   return (
@@ -48,7 +50,7 @@ const SplashScreen = props => {
         style={{ width: '90%', resizeMode: 'contain', margin: 30 }}
       />
       <ActivityIndicator
-        animating={animating}
+        animating={true}
         color="#FFFFFF"
         size="large"
         style={styles.activityIndicator}
