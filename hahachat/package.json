@@ -18,7 +18,7 @@
     "@react-navigation/native": "^5.7.1",
     "@react-navigation/stack": "^5.7.1",
     "@reduxjs/toolkit": "^1.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "i18next": "^19.3.4",
     "immutable": "^4.0.0-rc.12",
     "metro-core": "^0.59.0",
